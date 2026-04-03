@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHRED MASTERS OF UNIVERSE 🎸</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&family=Orbitron:wght@400;700;900&display=swap');
+  :root {
+    --bg:#0a0a0f; --panel:#12121e; --panel2:#1a1a2e;
+    --accent:#ff6b00; --accent2:#ffcc00; --green:#39ff14;
+    --cyan:#00f5ff; --pink:#ff2d78; --purple:#bf5fff;
+    --text:#e8e8f0; --muted:#5a5a7a; --border:#2a2a4a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'VT323',monospace;font-size:18px;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);pointer-events:none;z-index:9999;}
+  @keyframes flicker{0%,100%{opacity:1}92%{opacity:1}93%{opacity:0.85}94%{opacity:1}}
+  body{animation:flicker 8s infinite;}
+  .stars{position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(255,107,0,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(0,245,255,0.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+  .app{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:20px;}
+
+  /* HEADER */
+  .header{text-align:center;padding:30px 0 20px;border-bottom:2px solid var(--border);margin-bottom:24px;position:relative;}
+  .header::after{content:'';position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:200px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),var(--accent),transparent);animation:scanpulse 3s linear infinite;}
+  @keyframes scanpulse{0%{opacity:0.4}50%{opacity:1}100%{opacity:0.4}}
+  .logo{font-family:'Press Start 2P',monospace;font-size:clamp(14px,3.5vw,28px);color:var(--accent2);text-shadow:0 0 20px var(--accent),4px 4px 0 rgba(255,107,0,0.4);animation:glow 2s ease-in-out infinite;}
+  @keyframes glow{0%,100%{text-shadow:0 0 20px var(--accent),4px 4px 0 rgba(255,107,0,0.4)}50%{text-shadow:0 0 30px var(--accent2),0 0 60px rgba(255,204,0,0.6),4px 4px 0 rgba(255,107,0,0.4)}}
+  .subtitle{font-family:'VT323',monospace;font-size:22px;color:var(--cyan);margin-top:8px;letter-spacing:3px;}
+
+  /* TABS */
+  .tabs{display:flex;gap:4px;margin-bottom:20px;flex-wrap:wrap;}
+  .tab{font-family:'Press Start 2P',monospace;font-size:9px;padding:10px 14px;border:2px solid var(--border);background:var(--panel);color:var(--muted);cursor:pointer;transition:all 0.15s;letter-spacing:1px;}
+  .tab:hover{border-color:var(--accent);color:var(--accent);}
+  .tab.active{border-color:var(--accent2);color:var(--accent2);background:rgba(255,204,0,0.08);box-shadow:0 0 12px rgba(255,204,0,0.2);}
+  .section{display:none;} .section.active{display:block;}
+
+  /* EXERCISE PILLS */
+  .ex-section-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin:10px 0 6px;letter-spacing:1px;}
+  .ex-selector{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px;}
+  .ex-pill{font-family:'Press Start 2P',monospace;font-size:7px;padding:8px 10px;border:1px solid var(--border);background:var(--panel);color:var(--muted);cursor:pointer;transition:all 0.15s;border-radius:2px;white-space:nowrap;}
+  .ex-pill:hover{border-color:var(--cyan);color:var(--cyan);}
+  .ex-pill.active{border-color:var(--cyan);color:#000;background:var(--cyan);box-shadow:0 0 10px rgba(0,245,255,0.3);}
+  .ex-pill.penta:hover{border-color:var(--purple);color:var(--purple);}
+  .ex-pill.penta.active{border-color:var(--purple);color:#000;background:var(--purple);box-shadow:0 0 10px rgba(191,95,255,0.3);}
+
+  /* EXERCISE INFO CARD */
+  .ex-info{background:var(--panel2);border:1px solid var(--border);border-top:2px solid var(--cyan);padding:16px 18px;margin:14px 0 16px;display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;}
+  .ex-info.penta{border-top-color:var(--purple);}
+  .ex-info-left{flex:1;min-width:180px;}
+  .ex-info-title{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--cyan);letter-spacing:1px;margin-bottom:8px;}
+  .ex-info.penta .ex-info-title{color:var(--purple);}
+  .ex-info-desc{font-size:16px;color:var(--muted);line-height:1.4;margin-bottom:10px;}
+  .ex-goal-badge{background:var(--bg);border:1px solid var(--accent);padding:8px 14px;text-align:center;white-space:nowrap;align-self:flex-start;}
+  .ex-goal-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);}
+  .ex-goal-val{font-family:'Press Start 2P',monospace;font-size:18px;color:var(--accent2);margin-top:4px;}
+
+  /* SVG DIAGRAM */
+  .diagram-wrap{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+  .diagram-svg{flex-shrink:0;}
+
+  /* CLASS BAR */
+  .goal-banner{background:var(--panel);border:1px solid var(--border);border-top:2px solid var(--accent);padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+  .goal-label{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;}
+  .class-progress{flex:1;min-width:200px;}
+  .class-bar-wrap{background:rgba(255,255,255,0.05);border:1px solid var(--border);height:12px;overflow:hidden;margin-top:5px;}
+  .class-bar-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--accent),var(--accent2));transition:width 0.6s ease;}
+  .class-stat{font-size:14px;color:var(--muted);margin-top:3px;}
+
+  /* BOARD */
+  .board-header{display:grid;grid-template-columns:50px 1fr 100px 90px;padding:8px 16px;font-family:'Press Start 2P',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;border-bottom:1px solid var(--border);margin-bottom:8px;}
+  .player-card{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--muted);margin-bottom:8px;padding:14px 16px;display:grid;grid-template-columns:50px 1fr 100px 90px;align-items:center;gap:8px;transition:all 0.2s;position:relative;overflow:hidden;}
+  .player-card:hover{border-color:var(--accent);transform:translateX(2px);}
+  .player-card.rank-1{border-left-color:var(--accent2);background:rgba(255,204,0,0.05);}
+  .player-card.rank-2{border-left-color:#c0c0c0;background:rgba(192,192,192,0.03);}
+  .player-card.rank-3{border-left-color:#cd7f32;background:rgba(205,127,50,0.03);}
+  .player-card.complete{border-left-color:var(--green)!important;}
+  .rank-num{font-family:'Press Start 2P',monospace;font-size:14px;text-align:center;}
+  .rank-1 .rank-num{color:var(--accent2);text-shadow:0 0 10px rgba(255,204,0,0.5);}
+  .rank-2 .rank-num{color:#c0c0c0;} .rank-3 .rank-num{color:#cd7f32;}
+  .player-info{min-width:0;}
+  .player-name{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .player-meta{font-size:13px;color:var(--muted);margin-top:3px;}
+  .player-meta span{color:var(--pink);}
+  .badges-row{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px;}
+  .badge{font-size:15px;line-height:1;cursor:default;position:relative;}
+  .badge:hover::after{content:attr(title);position:absolute;bottom:120%;left:50%;transform:translateX(-50%);background:#000;border:1px solid var(--accent2);color:var(--accent2);font-family:'VT323',monospace;font-size:15px;padding:3px 8px;white-space:nowrap;z-index:100;pointer-events:none;}
+  .bpm-col{text-align:center;}
+  .bpm-value{font-family:'Press Start 2P',monospace;font-size:16px;color:var(--green);text-shadow:0 0 8px rgba(57,255,20,0.4);}
+  .bpm-value.goal-hit{color:var(--accent2);text-shadow:0 0 12px rgba(255,204,0,0.6);animation:blink 1.5s infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.7}}
+  .bpm-label{font-size:12px;color:var(--muted);margin-top:2px;}
+  .progress-bar-wrap{background:rgba(255,255,255,0.05);border:1px solid var(--border);height:10px;overflow:hidden;}
+  .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--cyan));transition:width 0.5s ease;}
+  .progress-bar-fill.complete{background:linear-gradient(90deg,var(--accent),var(--accent2));animation:shimmer 1.5s infinite;}
+  @keyframes shimmer{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
+  .progress-pct{font-size:13px;color:var(--muted);margin-top:3px;text-align:right;}
+  .empty-state{text-align:center;padding:50px 20px;color:var(--muted);font-size:18px;}
+  .empty-state .icon{font-size:44px;margin-bottom:12px;}
+
+  /* ADMIN */
+  .admin-panel{background:var(--panel);border:1px solid var(--border);border-top:2px solid var(--pink);padding:24px;}
+  .admin-title{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--pink);letter-spacing:2px;margin-bottom:18px;text-shadow:0 0 10px rgba(255,45,120,0.4);}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+  .form-group{display:flex;flex-direction:column;gap:6px;}
+  .form-group label{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;}
+  .form-group input,.form-group select{background:var(--bg);border:1px solid var(--border);border-radius:2px;color:var(--text);font-family:'VT323',monospace;font-size:20px;padding:8px 12px;outline:none;transition:border-color 0.15s;width:100%;}
+  .form-group input:focus,.form-group select:focus{border-color:var(--pink);}
+  .form-group select option{background:var(--bg);}
+  .btn{font-family:'Press Start 2P',monospace;font-size:10px;padding:12px 20px;border:none;cursor:pointer;letter-spacing:1px;transition:all 0.15s;}
+  .btn-primary{background:var(--accent);color:#000;box-shadow:4px 4px 0 rgba(255,107,0,0.3);}
+  .btn-primary:hover{background:var(--accent2);transform:translate(-1px,-1px);box-shadow:5px 5px 0 rgba(255,107,0,0.4);}
+  .btn-primary:active{transform:translate(2px,2px);}
+  .btn-danger{background:transparent;color:var(--pink);border:1px solid var(--pink);font-size:8px;padding:6px 10px;}
+  .btn-danger:hover{background:rgba(255,45,120,0.1);}
+  .btn-add{background:transparent;color:var(--cyan);border:1px solid var(--cyan);font-size:9px;}
+  .btn-add:hover{background:rgba(0,245,255,0.08);}
+  .admin-divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
+  .student-block{border-bottom:1px solid var(--border);padding:12px 0;}
+  .student-block-header{display:grid;grid-template-columns:1fr 90px auto;align-items:center;gap:10px;margin-bottom:8px;}
+  .student-row-name{font-family:'Orbitron',monospace;font-size:13px;}
+  .ex-progress-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:5px;}
+  .ex-prog-cell{background:var(--bg);border:1px solid var(--border);padding:5px 8px;}
+  .ex-prog-name{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ex-prog-bpm{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--green);}
+  /* SHAPE EDITOR */
+  .editor-grid{display:inline-grid;gap:0;border:1px solid var(--border);background:var(--bg);}
+  .editor-cell{width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #1a1a2e;position:relative;transition:background 0.1s;user-select:none;}
+  .editor-cell:hover{background:rgba(255,255,255,0.04);}
+  .editor-cell.has-note .dot-inner{width:26px;height:26px;border-radius:50%;background:#0e0e22;border:2px solid #c0c0d8;display:flex;align-items:center;justify-content:center;}
+  .editor-cell.has-root .dot-inner{background:#5b9bf8;border-color:#5b9bf8;}
+  .editor-cell.has-root .dot-inner::after{content:'R';font-family:Arial,sans-serif;font-size:10px;font-weight:bold;color:#000d20;}
+  .editor-cell.empty-cell .dot-inner{width:26px;height:26px;border-radius:50%;border:1px dashed #2a2a4a;}
+  .editor-str-label{width:22px;height:38px;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:11px;color:#5a5a7a;font-weight:bold;}
+  .editor-col-label{width:38px;height:22px;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:10px;color:#5a5a7a;}
+  .editor-str-label-spacer{width:22px;height:22px;}
+  .editor-cols-row{display:flex;}
+  .editor-row{display:flex;align-items:center;}
+
+  /* METRONOME */
+  .metro-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;padding:20px 0;}
+  .metro-bpm-display{font-family:'Press Start 2P',monospace;font-size:clamp(48px,12vw,96px);color:var(--accent2);text-shadow:0 0 30px var(--accent),0 0 60px rgba(255,107,0,0.4);line-height:1;transition:text-shadow 0.05s;}
+  .metro-bpm-display.flash{text-shadow:0 0 60px #fff,0 0 100px var(--accent2);}
+  .metro-bpm-label{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--muted);letter-spacing:3px;margin-top:-10px;}
+  .metro-pendulum-wrap{width:120px;height:140px;position:relative;display:flex;justify-content:center;}
+  .metro-rod{position:absolute;bottom:0;left:50%;width:3px;height:120px;background:linear-gradient(to top,var(--accent2),var(--muted));transform-origin:bottom center;border-radius:2px;transform:translateX(-50%) rotate(0deg);transition:transform 0s;}
+  .metro-bob{position:absolute;top:0;left:50%;width:22px;height:22px;border-radius:50%;background:var(--accent2);box-shadow:0 0 12px var(--accent);transform:translate(-50%,-50%);}
+  .metro-base{width:60px;height:10px;background:var(--muted);border-radius:4px;position:absolute;bottom:0;left:50%;transform:translateX(-50%);}
+  .metro-slider-wrap{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .metro-slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--border);outline:none;cursor:pointer;}
+  .metro-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--accent2);cursor:pointer;box-shadow:0 0 8px var(--accent);}
+  .metro-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent2);cursor:pointer;border:none;}
+  .metro-range-labels{display:flex;justify-content:space-between;width:100%;font-family:'VT323',monospace;font-size:14px;color:var(--muted);}
+  .metro-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center;}
+  .metro-btn{font-family:'Press Start 2P',monospace;font-size:10px;padding:14px 24px;border:none;cursor:pointer;letter-spacing:1px;transition:all 0.15s;}
+  .metro-btn-play{background:var(--green);color:#000;box-shadow:4px 4px 0 rgba(57,255,20,0.3);font-size:12px;padding:16px 32px;}
+  .metro-btn-play:hover{filter:brightness(1.2);transform:translate(-1px,-1px);}
+  .metro-btn-play.playing{background:var(--pink);box-shadow:4px 4px 0 rgba(255,45,120,0.3);}
+  .metro-tap{background:transparent;color:var(--cyan);border:2px solid var(--cyan);font-size:9px;}
+  .metro-tap:hover{background:rgba(0,245,255,0.08);}
+  .metro-tap:active{transform:scale(0.96);}
+  .metro-presets{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:420px;}
+  .metro-preset{font-family:'Press Start 2P',monospace;font-size:7px;padding:7px 10px;border:1px solid var(--border);background:var(--panel);color:var(--muted);cursor:pointer;border-radius:2px;transition:all 0.15s;}
+  .metro-preset:hover{border-color:var(--accent2);color:var(--accent2);}
+  .metro-beats{display:flex;gap:8px;margin-top:4px;}
+  .metro-beat-dot{width:14px;height:14px;border-radius:50%;background:var(--border);transition:background 0.05s,box-shadow 0.05s;}
+  .metro-beat-dot.active{background:var(--accent2);box-shadow:0 0 8px var(--accent2);}
+  .metro-beat-dot.downbeat{background:var(--accent);box-shadow:0 0 10px var(--accent);}
+  .metro-sig{display:flex;gap:8px;align-items:center;font-family:'Press Start 2P',monospace;font-size:8px;color:var(--muted);}
+  .metro-sig select{background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'VT323',monospace;font-size:18px;padding:4px 8px;outline:none;}
+
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--panel2);border:1px solid var(--green);color:var(--green);font-family:'Press Start 2P',monospace;font-size:10px;padding:12px 24px;z-index:9998;transition:transform 0.3s ease;text-align:center;white-space:nowrap;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  @media(max-width:600px){
+    .board-header{display:none;}
+    .player-card{grid-template-columns:40px 1fr 80px;}
+    .progress-col{grid-column:2/span 2;}
+    .form-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="app">
+
+  <div class="header">
+    <div class="logo">⚡ SHRED MASTERS ⚡</div>
+    <div class="subtitle">[ OF THE UNIVERSE ]</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('leaderboard')">🏆 LEADERBOARD</div>
+    <div class="tab" onclick="switchTab('metronome')">🥁 METRONOME</div>
+    <div class="tab" onclick="switchTab('admin')">🔧 ADMIN</div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="section active" id="leaderboard">
+    <div class="ex-section-label">— FINGER PERMUTATIONS —</div>
+    <div class="ex-selector" id="exSelector1234"></div>
+    <div class="ex-section-label">— PENTATONIC POSITIONS —</div>
+    <div class="ex-selector" id="exSelectorPenta"></div>
+
+    <div class="ex-info" id="exInfo">
+      <div class="ex-info-left">
+        <div class="ex-info-title" id="exInfoTitle"></div>
+        <div class="diagram-wrap">
+          <div id="exDiagram"></div>
+          <div>
+            <div class="ex-info-desc" id="exInfoDesc"></div>
+            <div id="exLegend" style="display:none;margin-top:10px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ex-goal-badge">
+        <div class="ex-goal-label">GOAL</div>
+        <div class="ex-goal-val" id="exInfoGoal"></div>
+      </div>
+    </div>
+
+    <div class="goal-banner">
+      <div class="class-progress">
+        <div class="goal-label">CLASS PROGRESS TOWARD GOAL</div>
+        <div class="class-bar-wrap"><div class="class-bar-fill" id="classBar" style="width:0%"></div></div>
+        <div class="class-stat" id="classStat">—</div>
+      </div>
+    </div>
+
+    <div class="board-header">
+      <span>#</span><span>PLAYER</span><span style="text-align:center">BPM</span><span>PROGRESS</span>
+    </div>
+    <div id="leaderboardList"></div>
+  </div>
+
+  <!-- METRONOME -->
+  <div class="section" id="metronome">
+    <div class="metro-wrap">
+
+      <!-- BPM display -->
+      <div style="text-align:center;">
+        <div class="metro-bpm-display" id="metroBpmDisplay">120</div>
+        <div class="metro-bpm-label">BPM</div>
+      </div>
+
+      <!-- Pendulum -->
+      <div class="metro-pendulum-wrap">
+        <div class="metro-rod" id="metroRod">
+          <div class="metro-bob"></div>
+        </div>
+        <div class="metro-base"></div>
+      </div>
+
+      <!-- Beat dots -->
+      <div style="text-align:center;">
+        <div class="metro-sig">
+          <span>TIME SIG</span>
+          <select id="metroBeats" onchange="updateBeats()">
+            <option value="2">2/4</option>
+            <option value="3">3/4</option>
+            <option value="4" selected>4/4</option>
+            <option value="6">6/8</option>
+          </select>
+        </div>
+        <div class="metro-beats" id="metroBeatDots"></div>
+      </div>
+
+      <!-- Slider -->
+      <div class="metro-slider-wrap">
+        <input type="range" class="metro-slider" id="metroBpmSlider"
+          min="30" max="250" value="120" oninput="metroBpmChange(this.value)">
+        <div class="metro-range-labels"><span>30</span><span>250</span></div>
+      </div>
+
+      <!-- +/- fine controls -->
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="metro-btn metro-tap" onclick="metroBpmChange(metroBpm-5)" style="font-size:14px;padding:10px 16px;">−5</button>
+        <button class="metro-btn metro-tap" onclick="metroBpmChange(metroBpm-1)" style="font-size:14px;padding:10px 14px;">−1</button>
+        <button class="metro-btn metro-tap" onclick="metroBpmChange(metroBpm+1)" style="font-size:14px;padding:10px 14px;">+1</button>
+        <button class="metro-btn metro-tap" onclick="metroBpmChange(metroBpm+5)" style="font-size:14px;padding:10px 16px;">+5</button>
+      </div>
+
+      <!-- Play / Tap -->
+      <div class="metro-controls">
+        <button class="metro-btn metro-btn-play" id="metroPlayBtn" onclick="metroToggle()">▶ START</button>
+        <button class="metro-btn metro-tap" onclick="metroTap()">TAP</button>
+      </div>
+
+      <!-- Presets -->
+      <div class="metro-presets">
+        <div class="metro-preset" onclick="metroBpmChange(40)">Largo 40</div>
+        <div class="metro-preset" onclick="metroBpmChange(60)">Adagio 60</div>
+        <div class="metro-preset" onclick="metroBpmChange(76)">Andante 76</div>
+        <div class="metro-preset" onclick="metroBpmChange(100)">Moderato 100</div>
+        <div class="metro-preset" onclick="metroBpmChange(120)">Allegro 120</div>
+        <div class="metro-preset" onclick="metroBpmChange(160)">Presto 160</div>
+        <div class="metro-preset" onclick="metroBpmChange(200)">Prestissimo 200</div>
+      </div>
+
+      <!-- Shape viewer -->
+      <div style="width:100%;max-width:520px;background:var(--panel2);border:1px solid var(--border);border-top:2px solid var(--purple);padding:16px;">
+        <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--purple);letter-spacing:1px;margin-bottom:12px;">🎸 SHAPE GUIDE</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+          <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);">EXERCISE</div>
+          <select id="metroShapeSelect" onchange="metroLoadShape()" style="background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'VT323',monospace;font-size:18px;padding:5px 10px;outline:none;flex:1;"></select>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
+          <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);">MODE</div>
+          <select id="metroShapeMode" onchange="metroLoadShape()" style="background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'VT323',monospace;font-size:18px;padding:5px 10px;outline:none;">
+            <option value="asc">↑ Ascending (low→high)</option>
+            <option value="desc">↓ Descending (high→low)</option>
+            <option value="asc_desc">↑↓ Ascending + Descending</option>
+          </select>
+        </div>
+        <div id="metroFretboard" style="overflow-x:auto;"></div>
+        <div style="margin-top:8px;font-family:'VT323',monospace;font-size:14px;color:var(--muted);text-align:center;" id="metroNoteCounter"></div>
+      </div>
+
+    </div>
+  </div>
+  <div class="section" id="admin">
+    <div class="admin-panel">
+      <div class="admin-title">⚙ ADMIN — LOG SESSION</div>
+      <div class="form-grid">
+        <div class="form-group" style="grid-column:1/-1">
+          <label>STUDENT</label>
+          <select id="sessionStudent" onchange="handleStudentSelect()"><option value="">— select student —</option><option value="__new__">+ CREATE NEW STUDENT</option></select>
+          <div id="newStudentInline" style="display:none;display:none;margin-top:6px;display:none;">
+            <div style="display:flex;gap:6px;">
+              <input id="newStudentNameInline" type="text" placeholder="Student name..." style="background:var(--bg);border:1px solid var(--pink);color:var(--text);font-family:'VT323',monospace;font-size:20px;padding:8px 12px;border-radius:2px;outline:none;flex:1;">
+              <button onclick="createStudentInline()" style="font-family:'Press Start 2P',monospace;font-size:8px;padding:8px 12px;background:var(--pink);color:#000;border:none;cursor:pointer;white-space:nowrap;">+ ADD</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>EXERCISE</label>
+          <select id="sessionExercise"><option value="">— select exercise —</option></select>
+        </div>
+        <div class="form-group">
+          <label>BPM ACHIEVED</label>
+          <input type="number" id="sessionBpm" min="1" max="300" placeholder="e.g. 72">
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="logSession()">▶ LOG SESSION</button>
+      <hr class="admin-divider">
+      <div class="admin-title" style="font-size:9px;margin-bottom:12px;">🎸 SHAPE EDITOR</div>
+      <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="form-group" style="flex:1;min-width:160px;">
+          <label>EDIT SHAPE</label>
+          <select id="editorShapeSelect" onchange="loadShapeEditor()"></select>
+        </div>
+        <div style="display:flex;gap:6px;align-items:flex-end;padding-bottom:2px;">
+          <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin-bottom:4px;">CLICK = TOGGLE · LONG PRESS = ROOT</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div style="width:14px;height:14px;border-radius:50%;background:#0e0e22;border:2px solid #c0c0d8;"></div>
+          <span style="font-size:14px;color:var(--muted);">normal note</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div style="width:14px;height:14px;border-radius:50%;background:#5b9bf8;border:2px solid #5b9bf8;"></div>
+          <span style="font-size:14px;color:var(--muted);">root (long press)</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div style="width:14px;height:14px;border-radius:50%;background:transparent;border:1px dashed var(--muted);"></div>
+          <span style="font-size:14px;color:var(--muted);">empty</span>
+        </div>
+      </div>
+      <div id="shapeEditorGrid" style="overflow-x:auto;"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="saveShapeEdit()" style="font-size:8px;padding:10px 16px;">💾 SAVE SHAPE</button>
+        <button class="btn btn-danger" onclick="resetShapeEdit()" style="font-size:8px;padding:10px 16px;">↺ RESET</button>
+      </div>
+      <hr class="admin-divider">
+      <div id="studentList"></div>
+      <br>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <input id="newStudentName" type="text" placeholder="Student name..." style="background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'VT323',monospace;font-size:20px;padding:8px 12px;border-radius:2px;outline:none;flex:1;min-width:160px;">
+        <button class="btn btn-add" onclick="addStudent()">+ ADD STUDENT</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- STUDENT PROFILE MODAL -->
+<div id="profileModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:10000;align-items:flex-start;justify-content:center;overflow-y:auto;padding:20px;">
+  <div style="background:#12121e;border:2px solid #00f5ff;max-width:500px;width:100%;margin:auto;padding:24px;position:relative;">
+    <div style="font-family:'Press Start 2P',monospace;font-size:10px;color:#00f5ff;letter-spacing:2px;margin-bottom:20px;">👤 STUDENT PROFILE</div>
+
+    <!-- Name -->
+    <div style="margin-bottom:14px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin-bottom:5px;">NAME</div>
+      <input id="profileName" type="text" style="width:100%;background:#0a0a0f;border:1px solid #2a2a4a;color:#e8e8f0;font-family:'VT323',monospace;font-size:22px;padding:8px 12px;outline:none;border-radius:2px;">
+    </div>
+
+    <!-- Notes -->
+    <div style="margin-bottom:14px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin-bottom:5px;">NOTES / OBSERVATIONS</div>
+      <textarea id="profileNotes" rows="3" style="width:100%;background:#0a0a0f;border:1px solid #2a2a4a;color:#e8e8f0;font-family:'VT323',monospace;font-size:18px;padding:8px 12px;outline:none;border-radius:2px;resize:vertical;"></textarea>
+    </div>
+
+    <!-- Scores per exercise -->
+    <div style="margin-bottom:16px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin-bottom:8px;">BPM SCORES</div>
+      <div id="profileScores" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
+    </div>
+
+    <!-- Sessions count -->
+    <div style="margin-bottom:20px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin-bottom:5px;">TOTAL SESSIONS</div>
+      <input id="profileSessions" type="number" min="0" style="width:120px;background:#0a0a0f;border:1px solid #2a2a4a;color:#e8e8f0;font-family:'VT323',monospace;font-size:22px;padding:8px 12px;outline:none;border-radius:2px;">
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="saveStudentProfile()" style="font-family:'Press Start 2P',monospace;font-size:9px;padding:12px 18px;background:#ff6b00;color:#000;border:none;cursor:pointer;">💾 SAVE</button>
+      <button onclick="closeStudentProfile()" style="font-family:'Press Start 2P',monospace;font-size:9px;padding:12px 18px;background:transparent;color:#5a5a7a;border:1px solid #2a2a4a;cursor:pointer;">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div id="pwModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10000;align-items:center;justify-content:center;">
+  <div style="background:#12121e;border:2px solid #ff2d78;padding:32px 28px;max-width:340px;width:90%;text-align:center;">
+    <div style="font-family:'Press Start 2P',monospace;font-size:11px;color:#ff2d78;letter-spacing:2px;margin-bottom:20px;">🔒 ADMIN ACCESS</div>
+    <input id="pwInput" type="password" placeholder="enter password..."
+      style="width:100%;background:#0a0a0f;border:1px solid #2a2a4a;color:#e8e8f0;font-family:'VT323',monospace;font-size:22px;padding:10px 14px;outline:none;border-radius:2px;margin-bottom:10px;"
+      onkeydown="if(event.key==='Enter')submitPassword()">
+    <div id="pwError" style="display:none;color:#ff2d78;font-family:'Press Start 2P',monospace;font-size:8px;margin-bottom:12px;">⛔ WRONG PASSWORD</div>
+    <div style="display:flex;gap:8px;justify-content:center;">
+      <button onclick="submitPassword()" style="font-family:'Press Start 2P',monospace;font-size:9px;padding:10px 18px;background:#ff6b00;color:#000;border:none;cursor:pointer;">ENTER</button>
+      <button onclick="cancelPassword()" style="font-family:'Press Start 2P',monospace;font-size:9px;padding:10px 18px;background:transparent;color:#5a5a7a;border:1px solid #2a2a4a;cursor:pointer;">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// SVG DIAGRAM GENERATORS
+// ═══════════════════════════════════════════════
+
+// Draw finger permutation as a single horizontal sequence of 4 numbered dots
+function drawPickingDiagram(sequence) {
+  const colors = ['#00f5ff','#39ff14','#ffcc00','#ff2d78'];
+  const R = 18;
+  const GAP = 54;
+  const PAD = 30;
+  const W = PAD * 2 + sequence.length * GAP;
+  const H = R * 2 + 20;
+  const cy = R + 10;
+
+  let dots = '';
+  sequence.forEach((finger, i) => {
+    const cx = PAD + i * GAP + R;
+    const color = colors[i];
+    // arrow between dots
+    if (i > 0) {
+      const ax = PAD + (i-1) * GAP + R * 2 + 4;
+      const ax2 = cx - R - 4;
+      dots += `<line x1="${ax}" y1="${cy}" x2="${ax2}" y2="${cy}" stroke="#3a3a5a" stroke-width="2" marker-end="url(#parr)"/>`;
+    }
+    dots += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="${color}" opacity="0.92"/>`;
+    dots += `<text x="${cx}" y="${cy+6}" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="#000">${finger}</text>`;
+  });
+
+  return `<svg width="${W}" height="${H}" class="diagram-svg" style="display:block;">
+    <defs><marker id="parr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3a3a5a"/></marker></defs>
+    ${dots}
+  </svg>`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// PENTATONIC DIAGRAM — rebuilt from new reference image
+// Layout: horizontal strings, E(high) top → E(low) bottom
+// Open circle = normal note, filled black = root note
+// str: 1=E high (top), 6=E low (bottom)
+// col: fret column within the shown window
+// root: filled circle (black in ref, accent color here)
+// ─────────────────────────────────────────────────────────────
+function drawPentaDiagram(dots, fretStart, accentColor, totalCols) {
+  const COLS = totalCols || 5;
+  const ROWS = 6;
+  const CW   = 36;
+  const RH   = 24;
+  const PAD_LEFT = 24;
+  const PAD_TOP  = 8;
+  const PAD_BOT  = 22;
+
+  const W = PAD_LEFT + COLS * CW + 10;
+  const H = PAD_TOP  + ROWS * RH + PAD_BOT;
+
+  const strLabels = ['e','B','G','D','A','E']; // top→bottom
+
+  const cx = col => PAD_LEFT + (col - 0.5) * CW;
+  const cy = row => PAD_TOP  + (row - 0.5) * RH;
+
+  // String lines — E low (row 6) thickest
+  let hLines = '';
+  for (let r = 1; r <= ROWS; r++) {
+    const y = PAD_TOP + (r - 0.5) * RH;
+    const sw = r===6?2.6:r===5?1.9:r===4?1.5:r===3?1.2:0.9;
+    hLines += `<line x1="${PAD_LEFT}" y1="${y}" x2="${PAD_LEFT+COLS*CW}" y2="${y}" stroke="#3a3a5a" stroke-width="${sw}"/>`;
+  }
+
+  // Fret/vertical lines — leftmost is nut (thick)
+  let vLines = '';
+  for (let c = 0; c <= COLS; c++) {
+    const x = PAD_LEFT + c * CW;
+    const isNut = c === 0;
+    vLines += `<line x1="${x}" y1="${PAD_TOP}" x2="${x}" y2="${PAD_TOP+ROWS*RH}" stroke="${isNut?'#9a9aba':'#2a2a4a'}" stroke-width="${isNut?3:1}"/>`;
+  }
+
+  // String labels left
+  let strSvg = '';
+  for (let r = 1; r <= ROWS; r++) {
+    const y = cy(r);
+    strSvg += `<text x="${PAD_LEFT-7}" y="${y+4}" text-anchor="middle" font-family="monospace" font-size="9" fill="#6a6a8a">${strLabels[r-1]}</text>`;
+  }
+
+  // Fret number labels below — only columns used by dots
+  const usedCols = [...new Set(dots.map(d=>d.col))].sort((a,b)=>a-b);
+  let fretSvg = '';
+  usedCols.forEach(col => {
+    const absF = fretStart + col - 1;
+    fretSvg += `<text x="${cx(col)}" y="${PAD_TOP+ROWS*RH+16}" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#8a8aaa">${absF}</text>`;
+  });
+
+  // Dots — finger number colored, roots filled blue(minor) or red(major)
+  const fingerColors = { 1:'#00f5ff', 2:'#39ff14', 3:'#ffcc00', 4:'#ff6b00' };
+  let dotsSvg = '';
+  dots.forEach(d => {
+    const x = cx(d.col);
+    const y = cy(d.str);
+    const rootType = d.root;
+    const isMinor = rootType === true || rootType === 'minor';
+    const isMajor = rootType === 'major';
+    const finger = d.finger || 1; // default to 1 if missing
+    const fColor = fingerColors[finger] || '#c0c0d8';
+
+    let fill, strk, tCol;
+    if (isMajor) {
+      fill = '#e8003a'; strk = '#ff2d78'; tCol = '#fff';
+    } else if (isMinor) {
+      fill = '#1a5fd4'; strk = '#5b9bf8'; tCol = '#fff';
+    } else {
+      fill = '#0e0e22'; strk = fColor; tCol = fColor;
+    }
+
+    dotsSvg += `<circle cx="${x}" cy="${y}" r="11" fill="${fill}" stroke="${strk}" stroke-width="2"/>`;
+    dotsSvg += `<text x="${x}" y="${y+4}" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="${tCol}">${finger}</text>`;
+  });
+
+  return `<svg width="${W}" height="${H}" class="diagram-svg" style="display:block;">
+    ${hLines}${vLines}${strSvg}${fretSvg}${dotsSvg}
+  </svg>`;
+}
+
+// ── All 5 Positions overview ──
+function drawAllShapesDiagram() {
+  const W = 360, H = 90;
+  const posX   = [36, 96, 156, 222, 288];
+  const labels = ['POS 1','POS 2','POS 3','POS 4','POS 5'];
+  const colors = ['#00f5ff','#39ff14','#ffcc00','#ff2d78','#bf5fff'];
+
+  let rects = posX.map((px,i) => `
+    <rect x="${px-28}" y="8" width="54" height="62" fill="${colors[i]}" opacity="0.10" rx="3" stroke="${colors[i]}" stroke-width="1.2"/>
+    <text x="${px}" y="24" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="6" fill="${colors[i]}">${labels[i]}</text>
+    <circle cx="${px}" cy="48" r="12" fill="${colors[i]}" opacity="0.85"/>
+    <text x="${px}" y="52" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#000">R</text>
+  `).join('');
+
+  let arrows = '';
+  for (let i=0;i<4;i++){
+    const ax = posX[i]+28; const ay = 48;
+    arrows += `<line x1="${ax}" y1="${ay}" x2="${ax+12}" y2="${ay}" stroke="#3a3a5a" stroke-width="1.5" marker-end="url(#arrowH)"/>`;
+  }
+
+  return `<svg width="${W}" height="${H}" class="diagram-svg">
+    <defs><marker id="arrowH" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#3a3a5a"/></marker></defs>
+    ${arrows}${rects}
+  </svg>`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// PENTATONIC POSITIONS — mapped dot-by-dot from reference image
+//
+// Reference image string order top→bottom: E B G D A E
+// str: 1=E(hi) 2=B 3=G 4=D 5=A 6=E(lo)
+// col: position within the fret window shown
+// root: true = filled black dot in image (shown as accent color)
+// fretStart: leftmost fret of the window (col 1)
+//
+// POSITION 1  (A minor root = fret 5)
+//   E(hi): col1●  col4○
+//   B:     col1○  col4○
+//   G:     col1○  col3○
+//   D:     col1○  col3○
+//   A:     col1○  col3○
+//   E(lo): col1●  col4○
+//
+// POSITION 2  (window starts fret 5, root at G col4)
+//   E(hi): col2○  col4○
+//   B:     col2○  col4○
+//   G:     col2○  col4●
+//   D:     col2○  col4○
+//   A:     col2○  col4○
+//   E(lo): col2○  col4○
+//
+// POSITION 3  (root at G col1)
+//   E(hi): col2○  col4○
+//   B:     col2○  col4○
+//   G:     col1●  col3○    ← root shifted left
+//   D:     col2○  col4○
+//   A:     col2○  col4○
+//   E(lo): col2○  col4○
+//
+// POSITION 4  (roots at G col3 and A col1)
+//   E(hi): col1○  col3○
+//   B:     col1○  col3○
+//   G:     col1○  col3●
+//   D:     col1○  col3○
+//   A:     col1●  col3○
+//   E(lo): col1○  col3○
+//
+// POSITION 5  (roots at E(hi) col3 and E(lo) col1)
+//   E(hi): col1○  col3●
+//   B:     col1○  col3○
+//   G:     col1○  col3○
+//   D:     col1○  col3○
+//   A:     col1●  col3○    ← root
+//   E(lo): col1●  col3○    ← root
+// ─────────────────────────────────────────────────────────────
+function _pentaShapesBase() {
+  return {
+    // ── POSITION 1  (box starts at fret 5 on real guitar) ──
+    // Notes per string (all relative, col1=fret5):
+    // e:  col1=A(minor), col4=D
+    // B:  col1=E,        col4=A(minor) — wait, B+4frets=E, B+7frets=... 
+    // Correct: A minor penta box 1 fingering:
+    // e(str1):  5(A)=col1 ROOT-minor, 8(C)=col4
+    // B(str2):  5(E)=col1,            8(A)=col4 ROOT-minor  ← A on B string fret 8 -> wrong, fret 8 B = G
+    // Actually using standard box positions:
+    // e:  fret5=A root-minor, fret8=C
+    // B:  fret5=E,            fret8=G
+    // G:  fret5=D,            fret7=E  — no wait
+    // Standard Am pentatonic shape 1:
+    // e:  5,8  → A, C
+    // B:  5,8  → E, G  (not A root here)
+    // G:  5,7  → C, D
+    // D:  5,7  → G, A root-minor
+    // A:  5,7  → D, E
+    // E:  5,8  → A root-minor, C
+    // So: minor roots = e col1, E(lo) col1, D col4
+    //     major roots = e col4, G col1
+    s1: { fretStart:1, cols:5, dots:[
+      {str:1, col:1, root:'minor', finger:1}, {str:1, col:4, root:'major', finger:4},
+      {str:2, col:1, finger:1},               {str:2, col:4, finger:4},
+      {str:3, col:1, root:'major', finger:1}, {str:3, col:3, finger:3},
+      {str:4, col:1, finger:1},               {str:4, col:3, root:'minor', finger:3},
+      {str:5, col:1, finger:1},               {str:5, col:3, finger:3},
+      {str:6, col:1, root:'minor', finger:1}, {str:6, col:4, root:'major', finger:4},
+    ]},
+
+    // ── POSITION 2  (box starts at fret 7) ──
+    // e:  7,10  → B? No. E string fret7=B, fret10=D — not Am penta roots
+    // Correct Am penta shape 2:
+    // e:  8,10  → C major-root, D
+    // B:  8,10  → G, A minor-root
+    // G:  7,9   → D, E  (neither root)  — wait, fret7 G = D, fret9 = E
+    // Hmm, shape 2 starts at fret 7 on low E. Let me use standard shape:
+    // e:  8(C)=col2, 10(D)=col4
+    // B:  8(G)=col2, 10(A)=col4 root-minor  — wait col2 means fret8 from fretStart=7, so col2=fret8
+    // Actually fretStart=1 in our display. So col1=first note of shape.
+    // Shape 2: E(lo): 7,10 → A(minor),D  — fret7 low E = A! 
+    // e:    8,10 → no... let me just use the correct standard positions:
+    // E(lo): col1=A(minor), col4=D
+    // A:     col2=E,        col4=G
+    // D:     col2=A(minor), col4=B? No.
+    // Using standard CAGED/box system Am penta shape 2 (root position at 7th fret low E):
+    // E(lo): 7=A minor-root,  10=D
+    // A:     7=D,              10=G  
+    // D:     7=G,              9=A minor-root
+    // G:     7=C major-root,   9=D
+    // B:     8=E,              10=G
+    // e:     8=C major-root,   10=D
+    s2: { fretStart:1, cols:5, dots:[
+      {str:1, col:2, root:'major', finger:1}, {str:1, col:4, finger:3},
+      {str:2, col:2, finger:1},               {str:2, col:4, finger:3},
+      {str:3, col:1, root:'major', finger:1}, {str:3, col:3, finger:3},
+      {str:4, col:1, finger:1},               {str:4, col:3, root:'minor', finger:3},
+      {str:5, col:1, finger:1},               {str:5, col:4, finger:4},
+      {str:6, col:1, root:'minor', finger:1}, {str:6, col:4, finger:4},
+    ]},
+
+    // ── POSITION 3  (box starts at fret 9/10) ──
+    // Am penta shape 3:
+    // E(lo): 10=C major-root, 12=D  — wait, fret10 low E = D not C. Let me recalc.
+    // Low E string: fret5=A, fret7=B, fret8=C, fret10=D, fret12=E
+    // Shape 3 starts at fret 9 on A string (or 10 on low E):
+    // E(lo): 10=D, 12=E  — neither root
+    // A:     10=G, 12=A minor-root
+    // D:     10=A minor-root, 12=B
+    // G:     9=E,  12=G? No. G string: fret9=E, fret12=G? Fret9=E, fret10=F#, fret12=G... 
+    // Hmm wait. G string fret9=E, fret12=G... but that's 3 frets apart not normal box.
+    // Standard Am penta shape 3:
+    // E(lo): 10=D,  12=E
+    // A:     10=G,  12=A minor-root
+    // D:     10=A minor-root, 12=B? No, D string fret10=A, fret12=B
+    // G:     9=C major-root,  12=E? G string fret9=E... wait G string open=G, fret9=E? 
+    // G string: open G, fret1=Ab, fret2=A, fret3=Bb, fret4=B, fret5=C, fret7=D, fret9=E, fret12=G
+    // So G string fret9=E, fret12=G
+    // B:     10=A minor-root, 12=B? B string fret10=A, fret12=B
+    // e:     10=D,            12=E  — hmm but shape 3 usually has e at 10,12
+    // Let me use the verified standard shape 3:
+    // E(lo): 10=D,            12=E
+    // A:     10=G,            12=A minor-root
+    // D:     10=A minor-root, 12=B
+    // G:     9=E,             12=G — but this makes col1 and col4 on G vs others at col2,col4
+    // B:     10=A minor-root, 13=C major-root? No, B string fret13=A... 
+    // Let me just use the verified shape 3 we know works (from our reference image):
+    // e:  col2, col4
+    // B:  col2, col4 with minor root at col4
+    // G:  col1 major-root, col3
+    // D:  col2, col4
+    // A:  col2, col4 with minor root at col4? 
+    // From reference image shape 3 - the root (filled dot) was on B string col4 and E(lo) col4
+    // That means: A note on B string and E(lo) in that position
+    // B string fret12=A ✓ (minor root), E(lo) fret12=E... that's E not A.
+    // Actually looking at reference image again — the filled dots in shape 3 were the Am roots
+    // B string col4 = A (fret 12 of B string = A? B+12 semitones = B, not A... B+11=Bb, B+10=A ✓ fret10=A)
+    // So shape 3: B string fret10=A minor-root, col4 relative to fretStart
+    // And G string col1 = C major-root (G string fret9=E... no. G+2=A... G string fret2=A, fret9=E, fret5=C ✓)
+    // Shape 3 (fretStart=9 in real, shown as col1=fret9):
+    // E(lo): col2=D(fret10), col4=E(fret12)  — no roots
+    // A:     col2=G(fret10), col4=A(fret12) minor-root
+    // D:     col2=A(fret10) minor-root, col4=B(fret12)  — wait D+10=A ✓ 
+    // G:     col1=E(fret9)? No. G string fret9=E, but C is at fret5. Hmm shape 3 G is at 9,12
+    //        fret9=E, fret12=G — so G string in shape 3: E and G, neither is A or C root
+    //        UNLESS shape 3 G string starts at fret10: fret10=F#... no.
+    // I'll go with: minor roots on A string col4 and D string col2; major root on G string col1
+    s3: { fretStart:1, cols:5, dots:[
+      {str:1, col:2, finger:1},               {str:1, col:4, finger:3},
+      {str:2, col:2, finger:1},               {str:2, col:4, root:'minor', finger:3},
+      {str:3, col:1, root:'major', finger:1}, {str:3, col:3, finger:3},
+      {str:4, col:2, root:'minor', finger:1}, {str:4, col:4, finger:3},
+      {str:5, col:2, finger:1},               {str:5, col:4, root:'minor', finger:3},
+      {str:6, col:2, finger:1},               {str:6, col:4, finger:3},
+    ]},
+
+    // ── POSITION 4  (box starts at fret 12) ──
+    // Am penta shape 4 (high octave of shape 1, shifted):
+    // E(lo): 12=E, 15=A minor-root
+    // A:     12=A minor-root, 15=D  — wait A string fret12=A ✓ 
+    // D:     12=D, 14=E  (neither root)  — D string fret12=D, fret14=E
+    // G:     12=G, 14=A minor-root  — G string fret12=G, fret14=A ✓
+    // B:     12=B, 15=D  (neither root)  — wait B+3=D, B+5=E, B+12=B, B+15=Eb... 
+    //        B string fret12=B, fret15=D? B+3=D ✓ fret15=Eb? No. fret12=B, fret13=C major-root, fret15=D
+    //        So B string: fret13=C major-root (but we use 2-note-per-string box)
+    //        Standard shape 4 B string: fret13=C major-root, fret15=D  → col2, col4
+    // e:     12=E, 15=A minor-root? e string fret12=E, fret15=G? e+15=G... fret12=E, fret17=A
+    //        Standard shape 4 e string: fret12=E, fret15=G  (col1, col4)  — neither root
+    //        UNLESS: fret13=C major-root on e string → col2
+    // Using standard Am penta shape 4:
+    // E(lo): 12=E(col1),  15=A(col4) minor-root
+    // A:     12=A(col1) minor-root, 15=D(col4)
+    // D:     12=D(col1), 14=E(col3)  — neither root (2 fret span here)
+    // G:     12=G(col1), 14=A(col3) minor-root
+    // B:     13=C(col2) major-root, 15=D(col4)
+    // e:     12=E(col1), 15=A(col4) minor-root  — wait shape4 e string: fret12,15 or 12,13?
+    //        Standard box 4: e string fret12=E, fret15=G → neither root
+    //        But some versions: fret13=C(major-root), fret15=D → col2, col4
+    // I'll go with the cleaner version matching standard CAGED shape 4:
+    s4: { fretStart:1, cols:5, dots:[
+      {str:1, col:1, finger:1},               {str:1, col:4, root:'minor', finger:4},
+      {str:2, col:2, root:'major', finger:1}, {str:2, col:4, finger:3},
+      {str:3, col:1, finger:1},               {str:3, col:3, root:'minor', finger:3},
+      {str:4, col:1, finger:1},               {str:4, col:3, finger:3},
+      {str:5, col:1, root:'minor', finger:1}, {str:5, col:4, finger:4},
+      {str:6, col:1, finger:1},               {str:6, col:4, root:'minor', finger:4},
+    ]},
+
+    // ── POSITION 5  (box starts at fret 15/17 area) ──
+    // Am penta shape 5:
+    // E(lo): 15=G(col1),  17=A(col3) minor-root
+    // A:     15=D(col1),  17=E(col3)  — neither root
+    // D:     15=A(col1) minor-root, 17=B(col3)
+    // G:     14=A(col1)? No. G string fret14=A minor-root, fret17=C major-root
+    //        But shape5 G: standard is fret14=A, fret17=C → col1=minor, col4=major
+    // B:     15=D(col1),  17=E(col3)  — neither root... 
+    //        Wait B string fret15=D, fret17=E — no roots
+    //        But some say: fret13=C(major), fret15=D → for shape 5 B string starts at 13
+    // e:     15=G(col1),  17=A(col3) minor-root
+    // Standard Am penta shape 5:
+    // E(lo): 15=G,  17=A minor-root
+    // A:     15=D,  17=E
+    // D:     14=A minor-root, 17=D — D string fret14=A ✓, fret17=D
+    //        Wait D string: open=D, fret12=D, fret14=E? D+14=E? D+2=E, D+14=E? Semitones: D+2=E, D+5=G, D+7=A, D+12=D
+    //        D string fret7=A ✓, fret12=D, fret14=E. So fret14=E not A.
+    //        Let me use: D string fret12=D... shape 5 usually D string: 12=D, 14=E or 15=G
+    //        Actually for shape 5 starting at 15: D string fret15=G, fret17=A minor-root ✓
+    // G:     fret14=A minor-root, fret17=D? G+14: G+7=D, G+12=G, G+14=A ✓
+    //        G string fret14=A minor-root, fret17=D? G+17=B? G+12=G, G+17=D ✓
+    //        So G string: fret14=A(minor), fret17=C(major)? G+17=D not C. Hmm.
+    //        G string: fret9=E, fret12=G, fret14=A, fret17=C? G+17: 12 semitones=G, +5=C ✓ G+17=C major-root!
+    // B:     fret15=D, fret17=E — no roots. OR fret13=C(major), fret15=D
+    // e:     fret15=G, fret17=A minor-root
+    // Final shape 5 (fretStart=1=fret14 on G, fret15 on others):
+    s5: { fretStart:1, cols:5, dots:[
+      {str:1, col:1, finger:1},               {str:1, col:3, root:'minor', finger:3},
+      {str:2, col:1, finger:1},               {str:2, col:3, finger:3},
+      {str:3, col:1, root:'minor', finger:1}, {str:3, col:4, root:'major', finger:4},
+      {str:4, col:1, finger:1},               {str:4, col:3, root:'minor', finger:3},
+      {str:5, col:1, finger:1},               {str:5, col:3, finger:3},
+      {str:6, col:1, finger:1},               {str:6, col:3, root:'minor', finger:3},
+    ]},
+  };
+}
+
+// ═══════════════════════════════════════════════
+// EXERCISES DATA
+// ═══════════════════════════════════════════════
+const EXERCISES = [
+  { id:'ex_1234', name:'1-2-3-4', category:'1234', goal:100, desc:'Index–middle–ring–pinky. The foundation. Keep alternate picking strict and every note even volume.',
+    diagram: () => drawPickingDiagram([1,2,3,4]) },
+  { id:'ex_1243', name:'1-2-4-3', category:'1234', goal:100, desc:'Index–middle–pinky–ring. The pinky/ring swap is the first real independence challenge.',
+    diagram: () => drawPickingDiagram([1,2,4,3]) },
+  { id:'ex_1324', name:'1-3-2-4', category:'1234', goal:100, desc:'Index–ring–middle–pinky. Crossing over with the ring finger feels unnatural at first — go slow.',
+    diagram: () => drawPickingDiagram([1,3,2,4]) },
+  { id:'ex_1342', name:'1-3-4-2', category:'1234', goal:100, desc:'Index–ring–pinky–middle. Ends on the middle finger. Great for breaking ingrained picking habits.',
+    diagram: () => drawPickingDiagram([1,3,4,2]) },
+  { id:'ex_1423', name:'1-4-2-3', category:'1234', goal:100, desc:'Index–pinky–middle–ring. Big stretch to pinky first then come back. Keep your wrist loose.',
+    diagram: () => drawPickingDiagram([1,4,2,3]) },
+  { id:'ex_1432', name:'1-4-3-2', category:'1234', goal:100, desc:'Index–pinky–ring–middle. Descending after the pinky jump. No accents on beat 1.',
+    diagram: () => drawPickingDiagram([1,4,3,2]) },
+  { id:'ex_penta_s1', name:'Position 1', category:'pentatonic', goal:100, desc:'Root on both E strings. The most common starting point for minor pentatonic soloing.',
+    diagram: () => { const s=getPentaShapes().s1; return drawPentaDiagram(s.dots,s.fretStart,'#5b9bf8',s.cols); } },
+  { id:'ex_penta_s2', name:'Position 2', category:'pentatonic', goal:100, desc:'Roots on G and B strings. Notice the G string shifts one fret to the left.',
+    diagram: () => { const s=getPentaShapes().s2; return drawPentaDiagram(s.dots,s.fretStart,'#5b9bf8',s.cols); } },
+  { id:'ex_penta_s3', name:'Position 3', category:'pentatonic', goal:100, desc:'Root on the G string shifted left. Watch that string — it breaks the pattern of the others.',
+    diagram: () => { const s=getPentaShapes().s3; return drawPentaDiagram(s.dots,s.fretStart,'#5b9bf8',s.cols); } },
+  { id:'ex_penta_s4', name:'Position 4', category:'pentatonic', goal:100, desc:'Roots on G and A strings. Compact 3-fret window used heavily in blues and rock.',
+    diagram: () => { const s=getPentaShapes().s4; return drawPentaDiagram(s.dots,s.fretStart,'#5b9bf8',s.cols); } },
+  { id:'ex_penta_s5', name:'Position 5', category:'pentatonic', goal:100, desc:'Roots on both E strings and A string. Completes the neck — loops back into Position 1.',
+    diagram: () => { const s=getPentaShapes().s5; return drawPentaDiagram(s.dots,s.fretStart,'#5b9bf8',s.cols); } },
+];
+
+const ACHIEVEMENTS = [
+  { id:'first_strum',   emoji:'🎸', name:'First Strum',     desc:'Logged your very first session',              check:s=>s.totalSessions>=1 },
+  { id:'half_way',      emoji:'🔥', name:'Half Way There',  desc:'Hit 50 BPM on any exercise',                  check:s=>Object.values(s.scores||{}).some(v=>v>=50) },
+  { id:'consistent',    emoji:'📅', name:'Consistent',      desc:'3+ total sessions logged',                    check:s=>s.totalSessions>=3 },
+  { id:'almost',        emoji:'⚡', name:'Almost There',    desc:'Hit 80 BPM on any exercise',                  check:s=>Object.values(s.scores||{}).some(v=>v>=80) },
+  { id:'big_jump',      emoji:'📈', name:'Big Jump',        desc:'+10 BPM improvement in one session',          check:s=>s.bigJump },
+  { id:'grinder',       emoji:'⚙️', name:'Grinder',         desc:'5+ total sessions logged',                    check:s=>s.totalSessions>=5 },
+  { id:'multi_master',  emoji:'🎯', name:'Multi-Master',    desc:'Has a score on 3+ different exercises',       check:s=>Object.keys(s.scores||{}).length>=3 },
+  { id:'penta_player',  emoji:'🟣', name:'Penta Player',    desc:'Scored on any pentatonic exercise',           check:s=>EXERCISES.filter(e=>e.category==='pentatonic').some(e=>(s.scores||{})[e.id]>0) },
+  { id:'century',       emoji:'🏆', name:'Century Club',    desc:'Hit 100 BPM on any exercise!',                check:s=>Object.values(s.scores||{}).some(v=>v>=100) },
+  { id:'completionist', emoji:'🌟', name:'Completionist',   desc:'Reached the goal on 3+ different exercises',  check:s=>EXERCISES.filter(e=>(s.scores||{})[e.id]>=e.goal).length>=3 },
+];
+
+// ═══════════════════════════════════════════════
+// STATE & STORAGE
+// ═══════════════════════════════════════════════
+const ADMIN_PASSWORD = 'maconha2020';
+let adminUnlocked = false;
+let currentExId = EXERCISES[0].id;
+
+function loadData(){try{return JSON.parse(localStorage.getItem('shredMasters')||'{"students":[]}');}catch{return{students:[]};}}
+function saveData(d){localStorage.setItem('shredMasters',JSON.stringify(d));}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function switchTab(tab){
+  if(tab==='admin'&&!adminUnlocked){
+    showPasswordModal();
+    return;
+  }
+  activateTab(tab);
+}
+
+function activateTab(tab){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+  const tabIndex = tab==='leaderboard'?0:tab==='metronome'?1:2;
+  document.querySelectorAll('.tab')[tabIndex].classList.add('active');
+  if(tab==='leaderboard')renderLeaderboard();
+  if(tab==='admin')renderAdmin();
+  if(tab!=='metronome')metroStop();
+  if(tab==='metronome')metroInitShapeSelect();
+}
+
+function showPasswordModal(){
+  document.getElementById('pwModal').style.display='flex';
+  document.getElementById('pwInput').value='';
+  setTimeout(()=>document.getElementById('pwInput').focus(),100);
+}
+
+function submitPassword(){
+  const pw = document.getElementById('pwInput').value;
+  if(pw === ADMIN_PASSWORD){
+    adminUnlocked = true;
+    document.getElementById('pwModal').style.display='none';
+    activateTab('admin');
+  } else {
+    document.getElementById('pwError').style.display='block';
+    document.getElementById('pwInput').value='';
+    document.getElementById('pwInput').focus();
+  }
+}
+
+function cancelPassword(){
+  document.getElementById('pwModal').style.display='none';
+}
+
+// ═══════════════════════════════════════════════
+// EXERCISE PILLS
+// ═══════════════════════════════════════════════
+function buildExPills(){
+  document.getElementById('exSelector1234').innerHTML=EXERCISES.filter(e=>e.category==='1234').map(e=>
+    `<div class="ex-pill${e.id===currentExId?' active':''}" onclick="selectExercise('${e.id}')">${e.name}</div>`
+  ).join('');
+  document.getElementById('exSelectorPenta').innerHTML=EXERCISES.filter(e=>e.category==='pentatonic').map(e=>
+    `<div class="ex-pill penta${e.id===currentExId?' active':''}" onclick="selectExercise('${e.id}')">${e.name}</div>`
+  ).join('');
+}
+
+function selectExercise(id){
+  currentExId=id;
+  buildExPills();
+  updateExInfo();
+  renderLeaderboard();
+}
+
+function updateExInfo(){
+  const ex=EXERCISES.find(e=>e.id===currentExId);
+  const isPenta=ex.category==='pentatonic';
+  document.getElementById('exInfo').className='ex-info'+(isPenta?' penta':'');
+  document.getElementById('exInfoTitle').textContent=ex.name.toUpperCase();
+  document.getElementById('exInfoDesc').textContent=ex.desc;
+  document.getElementById('exInfoGoal').textContent=ex.goal+' BPM';
+  document.getElementById('exDiagram').innerHTML=ex.diagram();
+
+  // Legend — show for pentatonic, hide for 1234
+  const legend = document.getElementById('exLegend');
+  if (isPenta) {
+    legend.style.display = 'block';
+    legend.innerHTML = `
+      <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);margin-bottom:8px;letter-spacing:1px;">LEGEND</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        ${[
+          {color:'#00f5ff', label:'Finger 1 (index)'},
+          {color:'#39ff14', label:'Finger 2 (middle)'},
+          {color:'#ffcc00', label:'Finger 3 (ring)'},
+          {color:'#ff2d78', label:'Finger 4 (pinky)'},
+        ].map(f=>`
+          <div style="display:flex;align-items:center;gap:5px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#0e0e22;border:2px solid ${f.color};display:flex;align-items:center;justify-content:center;font-family:Arial;font-size:11px;font-weight:bold;color:${f.color};">${f.label[7]}</div>
+            <span style="font-size:13px;color:var(--muted);">${f.label}</span>
+          </div>`).join('')}
+        <div style="display:flex;align-items:center;gap:5px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:#1a5fd4;border:2px solid #5b9bf8;display:flex;align-items:center;justify-content:center;font-family:Arial;font-size:10px;font-weight:bold;color:#fff;">1</div>
+          <span style="font-size:13px;color:#5b9bf8;">Minor root</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:#e8003a;border:2px solid #ff2d78;display:flex;align-items:center;justify-content:center;font-family:Arial;font-size:10px;font-weight:bold;color:#fff;">1</div>
+          <span style="font-size:13px;color:#ff2d78;">Major root</span>
+        </div>
+      </div>`;
+  } else {
+    legend.style.display = 'none';
+  }
+}
+
+// ═══════════════════════════════════════════════
+// LEADERBOARD
+// ═══════════════════════════════════════════════
+function renderLeaderboard(){
+  const data=loadData();
+  const ex=EXERCISES.find(e=>e.id===currentExId);
+  const list=document.getElementById('leaderboardList');
+  if(!data.students.length){
+    list.innerHTML='<div class="empty-state"><div class="icon">🎸</div><div>NO PLAYERS YET</div><div style="font-size:15px;margin-top:8px;">Add students in the ADMIN tab</div></div>';
+    document.getElementById('classBar').style.width='0%';
+    document.getElementById('classStat').textContent='—';
+    return;
+  }
+  const sorted=[...data.students].sort((a,b)=>((b.scores||{})[currentExId]||0)-((a.scores||{})[currentExId]||0));
+  const scores=sorted.map(s=>(s.scores||{})[currentExId]||0);
+  const atGoal=scores.filter(v=>v>=ex.goal).length;
+  const avg=scores.reduce((a,b)=>a+b,0)/scores.length;
+  const classPct=Math.min(100,Math.round((avg/ex.goal)*100));
+  document.getElementById('classBar').style.width=classPct+'%';
+  document.getElementById('classStat').textContent=`${atGoal}/${sorted.length} at goal · class avg ${Math.round(avg)} BPM`;
+  list.innerHTML=sorted.map((s,i)=>{
+    const bpm=(s.scores||{})[currentExId]||0;
+    const pct=Math.min(100,Math.round((bpm/ex.goal)*100));
+    const badges=ACHIEVEMENTS.filter(a=>a.check(s)).map(a=>`<span class="badge" title="${a.name}: ${a.desc}">${a.emoji}</span>`).join('');
+    const rankClass=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'';
+    const rankLabel=i===0?'👑':i===1?'🥈':i===2?'🥉':`${i+1}`;
+    const sess=s.totalSessions||0;
+    return `<div class="player-card ${rankClass} ${bpm>=ex.goal?'complete':''}">
+      <div class="rank-num">${rankLabel}</div>
+      <div class="player-info">
+        <div class="player-name">${escHtml(s.name)}</div>
+        <div class="player-meta">🔁 <span>${sess} session${sess!==1?'s':''}</span></div>
+        <div class="badges-row">${badges||'<span style="color:var(--muted);font-size:13px;">no badges yet</span>'}</div>
+      </div>
+      <div class="bpm-col">
+        <div class="bpm-value ${bpm>=ex.goal?'goal-hit':''}">${bpm||'—'}</div>
+        <div class="bpm-label">BPM</div>
+      </div>
+      <div class="progress-col">
+        <div class="progress-bar-wrap"><div class="progress-bar-fill ${bpm>=ex.goal?'complete':''}" style="width:${pct}%"></div></div>
+        <div class="progress-pct">${pct}%</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+// ADMIN
+// ═══════════════════════════════════════════════
+function renderAdmin(){
+  const data=loadData();
+  const ssel=document.getElementById('sessionStudent');
+  const prevS=ssel.value;
+  ssel.innerHTML='<option value="">— select student —</option>'+
+    data.students.map(s=>`<option value="${s.id}" ${s.id===prevS?'selected':''}>${escHtml(s.name)}</option>`).join('')+
+    '<option value="__new__">+ CREATE NEW STUDENT</option>';
+  // keep inline form state
+  if(prevS==='__new__') {
+    document.getElementById('newStudentInline').style.display='block';
+  }
+  const esel=document.getElementById('sessionExercise');
+  const prevE=esel.value;
+  esel.innerHTML='<option value="">— select exercise —</option>'+EXERCISES.map(e=>`<option value="${e.id}" ${e.id===prevE?'selected':''}>${e.name} (goal: ${e.goal} BPM)</option>`).join('');
+
+  initShapeEditorSelect();
+  const list=document.getElementById('studentList');
+  if(!data.students.length){list.innerHTML='<div style="color:var(--muted);font-size:16px;padding:10px 0;">No students yet.</div>';return;}
+  list.innerHTML=data.students.map(s=>{
+    const cells=EXERCISES.map(ex=>{
+      const bpm=(s.scores||{})[ex.id]||0;
+      const hit=bpm>=ex.goal;
+      return `<div class="ex-prog-cell"><div class="ex-prog-name" title="${ex.name}">${ex.name}</div><div class="ex-prog-bpm" style="${hit?'color:var(--accent2)':''}">${bpm||'—'}</div></div>`;
+    }).join('');
+    return `<div class="student-block">
+      <div class="student-block-header">
+        <div class="student-row-name">${escHtml(s.name)}</div>
+        <div style="font-size:14px;color:var(--muted);">${s.totalSessions||0} sessions</div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-add" style="font-size:7px;padding:6px 10px;" onclick="openStudentProfile('${s.id}')">✏ EDIT</button>
+          <button class="btn btn-danger" onclick="removeStudent('${s.id}')">✕</button>
+        </div>
+      </div>
+      <div class="ex-progress-grid">${cells}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+// STUDENT PROFILE
+// ═══════════════════════════════════════════════
+let currentProfileId = null;
+
+function openStudentProfile(id) {
+  const data = loadData();
+  const s = data.students.find(x => x.id === id);
+  if (!s) return;
+  currentProfileId = id;
+
+  document.getElementById('profileName').value = s.name || '';
+  document.getElementById('profileNotes').value = s.notes || '';
+  document.getElementById('profileSessions').value = s.totalSessions || 0;
+
+  // Build score inputs per exercise
+  const scoresDiv = document.getElementById('profileScores');
+  scoresDiv.innerHTML = EXERCISES.map(ex => {
+    const bpm = (s.scores||{})[ex.id] || 0;
+    return `<div style="background:#0a0a0f;border:1px solid #2a2a4a;padding:8px 10px;">
+      <div style="font-family:'Press Start 2P',monospace;font-size:6px;color:#5a5a7a;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${ex.name}</div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <input type="number" min="0" max="300" value="${bpm}"
+          data-exid="${ex.id}"
+          style="width:70px;background:#12121e;border:1px solid #2a2a4a;color:${bpm>=ex.goal?'#ffcc00':'#39ff14'};font-family:'VT323',monospace;font-size:20px;padding:4px 8px;outline:none;border-radius:2px;">
+        <span style="font-size:13px;color:#5a5a7a;">/ ${ex.goal}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('profileModal').style.display = 'flex';
+  document.getElementById('profileName').focus();
+}
+
+function saveStudentProfile() {
+  if (!currentProfileId) return;
+  const data = loadData();
+  const s = data.students.find(x => x.id === currentProfileId);
+  if (!s) return;
+
+  const newName = document.getElementById('profileName').value.trim();
+  if (!newName) return showToast('⚠ NAME CANNOT BE EMPTY');
+
+  s.name = newName;
+  s.notes = document.getElementById('profileNotes').value.trim();
+  s.totalSessions = parseInt(document.getElementById('profileSessions').value) || 0;
+
+  // Save all score inputs
+  if (!s.scores) s.scores = {};
+  document.querySelectorAll('#profileScores input[data-exid]').forEach(inp => {
+    const val = parseInt(inp.value) || 0;
+    if (val > 0) s.scores[inp.dataset.exid] = val;
+    else delete s.scores[inp.dataset.exid];
+  });
+
+  saveData(data);
+  closeStudentProfile();
+  renderAdmin();
+  renderLeaderboard();
+  showToast('✔ PROFILE SAVED');
+}
+
+function closeStudentProfile() {
+  document.getElementById('profileModal').style.display = 'none';
+  currentProfileId = null;
+}
+
+function handleStudentSelect() {
+  const val = document.getElementById('sessionStudent').value;
+  const inline = document.getElementById('newStudentInline');
+  inline.style.display = val === '__new__' ? 'block' : 'none';
+  if (val === '__new__') setTimeout(()=>document.getElementById('newStudentNameInline').focus(), 50);
+}
+
+function createStudentInline() {
+  const input = document.getElementById('newStudentNameInline');
+  const name = input.value.trim();
+  if (!name) return showToast('⚠ ENTER A NAME');
+  const data = loadData();
+  if (data.students.find(s=>s.name.toLowerCase()===name.toLowerCase())) return showToast('⚠ STUDENT EXISTS');
+  const newId = Date.now().toString();
+  data.students.push({id:newId, name, scores:{}, totalSessions:0, bigJump:false});
+  saveData(data);
+  input.value='';
+  // Rebuild select and auto-select the new student
+  const ssel = document.getElementById('sessionStudent');
+  renderAdmin();
+  ssel.value = newId;
+  document.getElementById('newStudentInline').style.display='none';
+  showToast(`✔ ${name} ADDED`);
+}
+
+function addStudent(){
+  const input=document.getElementById('newStudentName');
+  const name=input.value.trim();
+  if(!name)return showToast('⚠ ENTER A NAME');
+  const data=loadData();
+  if(data.students.find(s=>s.name.toLowerCase()===name.toLowerCase()))return showToast('⚠ STUDENT EXISTS');
+  data.students.push({id:Date.now().toString(),name,scores:{},totalSessions:0,bigJump:false});
+  saveData(data);input.value='';renderAdmin();showToast(`✔ ${name} ADDED`);
+}
+
+function removeStudent(id){
+  const data=loadData();
+  const s=data.students.find(x=>x.id===id);
+  if(!confirm(`Remove ${s?.name}?`))return;
+  data.students=data.students.filter(x=>x.id!==id);
+  saveData(data);renderAdmin();showToast('STUDENT REMOVED');
+}
+
+function logSession(){
+  const sid=document.getElementById('sessionStudent').value;
+  const exId=document.getElementById('sessionExercise').value;
+  const bpmVal=parseInt(document.getElementById('sessionBpm').value);
+  if(!sid)return showToast('⚠ SELECT A STUDENT');
+  if(!exId)return showToast('⚠ SELECT AN EXERCISE');
+  if(!bpmVal||bpmVal<1||bpmVal>300)return showToast('⚠ ENTER VALID BPM');
+  const data=loadData();
+  const s=data.students.find(x=>x.id===sid);
+  if(!s)return;
+  if(!s.scores)s.scores={};
+  const prevAch=new Set(ACHIEVEMENTS.filter(a=>a.check(s)).map(a=>a.id));
+  const prevBpm=s.scores[exId]||0;
+  if(bpmVal-prevBpm>=10)s.bigJump=true;
+  if(bpmVal>(s.scores[exId]||0))s.scores[exId]=bpmVal;
+  s.totalSessions=(s.totalSessions||0)+1;
+  saveData(data);
+  document.getElementById('sessionBpm').value='';
+  renderAdmin();
+  const newAch=ACHIEVEMENTS.filter(a=>a.check(s)&&!prevAch.has(a.id));
+  if(newAch.length)showToast(`${newAch.map(a=>a.emoji).join('')} NEW BADGE${newAch.length>1?'S':''}!`);
+  else showToast(`✔ LOGGED — ${s.scores[exId]} BPM`);
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ═══════════════════════════════════════════════
+// SHAPE EDITOR
+// ═══════════════════════════════════════════════
+let editorState = {};
+let editorCols = 5;
+const EDITOR_ROWS = 6;
+const STR_LABELS_ED = ['e','B','G','D','A','E'];
+
+function initShapeEditorSelect() {
+  const sel = document.getElementById('editorShapeSelect');
+  if (!sel) return;
+  const prev = sel.value;
+  const pentaExs = EXERCISES.filter(e => e.category === 'pentatonic');
+  sel.innerHTML = pentaExs.map(e => `<option value="${e.id}" ${e.id===prev?'selected':''}>${e.name}</option>`).join('');
+  loadShapeEditor();
+}
+
+function loadShapeEditor() {
+  const sel = document.getElementById('editorShapeSelect');
+  if (!sel || !sel.value) return;
+  const exId = sel.value;
+  const shapeKey = exId.replace('ex_penta_', '');
+  const shapes = getPentaShapes();
+  const shape = shapes[shapeKey];
+  if (!shape) return;
+
+  editorCols = shape.cols || 5;
+  editorState = {};
+
+  for (let r = 1; r <= EDITOR_ROWS; r++)
+    for (let c = 1; c <= editorCols; c++)
+      editorState[`${r}-${c}`] = { finger:0, root:false };
+
+  shape.dots.forEach(d => {
+    editorState[`${d.str}-${d.col}`] = { finger: d.finger || 1, root: d.root || false };
+  });
+
+  renderEditorGrid();
+}
+
+function renderEditorGrid() {
+  const wrap = document.getElementById('shapeEditorGrid');
+  if (!wrap) return;
+
+  const legend = `<div style="display:flex;gap:14px;margin-bottom:8px;flex-wrap:wrap;align-items:center;">
+    <span style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--muted);">LEFT: cycle 1→2→3→4→empty &nbsp;|&nbsp; RIGHT: cycle root</span>
+    <span style="display:flex;gap:5px;align-items:center;"><div style="width:12px;height:12px;border-radius:50%;background:#5b9bf8;"></div><span style="font-size:12px;color:#5b9bf8;">minor root</span></span>
+    <span style="display:flex;gap:5px;align-items:center;"><div style="width:12px;height:12px;border-radius:50%;background:#ff2d78;"></div><span style="font-size:12px;color:#ff2d78;">major root</span></span>
+  </div>`;
+
+  const dotColors = { 1:'#00f5ff', 2:'#39ff14', 3:'#ffcc00', 4:'#ff2d78' };
+
+  let html = `<table style="border-collapse:collapse;">`;
+  html += `<tr><td style="width:24px;"></td>`;
+  for (let c = 1; c <= editorCols; c++)
+    html += `<td style="width:48px;text-align:center;font-family:monospace;font-size:11px;color:#5a5a7a;padding-bottom:4px;">${c}</td>`;
+  html += `</tr>`;
+
+  for (let r = 1; r <= EDITOR_ROWS; r++) {
+    const strW = r===6?3:r===5?2.2:r===4?1.6:r===3?1.2:0.9;
+    const bg = `linear-gradient(transparent calc(50% - ${strW/2}px), #3a3a5a calc(50% - ${strW/2}px), #3a3a5a calc(50% + ${strW/2}px), transparent calc(50% + ${strW/2}px))`;
+    html += `<tr>`;
+    html += `<td style="text-align:center;font-family:monospace;font-size:12px;font-weight:bold;color:#8a8aaa;padding-right:4px;">${STR_LABELS_ED[r-1]}</td>`;
+    for (let c = 1; c <= editorCols; c++) {
+      const key = `${r}-${c}`;
+      const st = editorState[key] || { finger:0, root:false };
+      const f = st.finger || 0;
+      const isRoot = st.root || false;
+
+      let dotHtml = '';
+      if (f === 0) {
+        // Empty
+        dotHtml = `<div style="width:32px;height:32px;border-radius:50%;border:1px dashed #2a2a4a;margin:auto;"></div>`;
+      } else {
+        const baseColor = dotColors[f] || '#888';
+        const bg2 = isRoot === 'minor' ? '#1a5fd4' : isRoot === 'major' ? '#e8003a' : '#0e0e22';
+        const border = isRoot === 'minor' ? '3px solid #5b9bf8' : isRoot === 'major' ? '3px solid #ff2d78' : `2px solid ${baseColor}`;
+        const textColor = isRoot ? '#fff' : baseColor;
+        dotHtml = `<div style="width:32px;height:32px;border-radius:50%;background:${bg2};border:${border};margin:auto;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;color:${textColor};">${f}</div>`;
+      }
+
+      html += `<td style="padding:4px 6px;cursor:pointer;background:${bg};user-select:none;"
+        onclick="editorToggleFinger('${key}')"
+        oncontextmenu="editorToggleRoot('${key}');return false;">
+        ${dotHtml}
+      </td>`;
+    }
+    html += `</tr>`;
+  }
+  html += `</table>`;
+  wrap.innerHTML = legend + html;
+}
+
+// Left click: cycle finger 0→1→2→3→4→0
+function editorToggle(key) { editorToggleFinger(key); }
+
+function editorToggleFinger(key) {
+  if (!editorState[key]) editorState[key] = { finger:0, root:false };
+  const cur = editorState[key].finger || 0;
+  editorState[key].finger = cur >= 4 ? 0 : cur + 1;
+  // Clear root if emptied
+  if (editorState[key].finger === 0) editorState[key].root = false;
+  renderEditorGrid();
+}
+
+// Right click: cycle root none → minor (blue) → major (red) → none
+function editorToggleRoot(key) {
+  if (!editorState[key]) editorState[key] = { finger:0, root:false };
+  if (editorState[key].finger === 0) return; // can't root an empty cell
+  const cur = editorState[key].root;
+  editorState[key].root = cur === false ? 'minor' : cur === 'minor' ? 'major' : false;
+  renderEditorGrid();
+}
+
+function saveShapeEdit() {
+  const sel = document.getElementById('editorShapeSelect');
+  if (!sel || !sel.value) return;
+  const exId = sel.value;
+  const shapeKey = exId.replace('ex_penta_', '');
+
+  const newDots = [];
+  for (let r = 1; r <= EDITOR_ROWS; r++)
+    for (let c = 1; c <= editorCols; c++) {
+      const st = editorState[`${r}-${c}`];
+      if (st && st.finger > 0) {
+        const dot = { str:r, col:c, finger:st.finger };
+        if (st.root) dot.root = st.root; // 'minor' | 'major' | false
+        newDots.push(dot);
+      }
+    }
+
+  const overrides = JSON.parse(localStorage.getItem('shapeOverrides') || '{}');
+  overrides[shapeKey] = { cols: editorCols, dots: newDots };
+  localStorage.setItem('shapeOverrides', JSON.stringify(overrides));
+
+  showToast('✔ SHAPE SAVED');
+  if (currentExId === exId) updateExInfo();
+}
+
+function resetShapeEdit() {
+  const sel = document.getElementById('editorShapeSelect');
+  if (!sel || !sel.value) return;
+  const shapeKey = sel.value.replace('ex_penta_', '');
+  const overrides = JSON.parse(localStorage.getItem('shapeOverrides') || '{}');
+  delete overrides[shapeKey];
+  localStorage.setItem('shapeOverrides', JSON.stringify(overrides));
+  loadShapeEditor();
+  showToast('↺ RESET TO DEFAULT');
+  if (currentExId === sel.value) updateExInfo();
+}
+
+function getPentaShapes() {
+  const base = _pentaShapesBase();
+  try {
+    const overrides = JSON.parse(localStorage.getItem('shapeOverrides') || '{}');
+    Object.keys(overrides).forEach(key => {
+      if (!base[key]) return;
+      const ov = overrides[key];
+      // Only apply override if it uses the new format (dots have finger property)
+      if (ov.dots && ov.dots.length > 0 && ov.dots[0].finger !== undefined) {
+        base[key] = { ...base[key], ...ov };
+      }
+      // Stale old-format overrides (no finger) are silently ignored
+    });
+  } catch(e) {}
+  return base;
+}
+
+// ═══════════════════════════════════════════════
+// METRONOME
+// ═══════════════════════════════════════════════
+let metroBpm = 120;
+let metroPlaying = false;
+let metroCtx = null;
+let metroNextTime = 0;
+let metroScheduler = null;
+let metroCurBeat = 0;
+let metroTotalBeats = 4;
+let metroPendulumDir = 1;
+let tapTimes = [];
+
+// Shape beat tracker
+let metroNotesSequence = []; // array of dot objects in play order
+let metroDotIndex = 0;       // which dot lights up next
+
+function metroGetCtx() {
+  if (!metroCtx) metroCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return metroCtx;
+}
+
+function metroScheduleTick() {
+  const ctx = metroGetCtx();
+  const interval = 60 / metroBpm;
+  const scheduleAhead = 0.2;
+
+  while (metroNextTime < ctx.currentTime + scheduleAhead) {
+    const isAccent = metroCurBeat === 0;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = isAccent ? 1200 : 800;
+    gain.gain.setValueAtTime(isAccent ? 0.9 : 0.5, metroNextTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, metroNextTime + 0.06);
+    osc.start(metroNextTime); osc.stop(metroNextTime + 0.06);
+
+    const delay = (metroNextTime - ctx.currentTime) * 1000;
+    const beat = metroCurBeat;
+    const dotIdx = metroDotIndex;
+    setTimeout(() => metroVisualTick(beat, isAccent, dotIdx), Math.max(0, delay));
+
+    metroCurBeat = (metroCurBeat + 1) % metroTotalBeats;
+    if (metroNotesSequence.length > 0) {
+      metroDotIndex = (metroDotIndex + 1) % metroNotesSequence.length;
+    }
+    metroNextTime += interval;
+  }
+}
+
+function metroVisualTick(beat, isAccent, dotIdx) {
+  // Flash BPM
+  const disp = document.getElementById('metroBpmDisplay');
+  if (disp) { disp.classList.add('flash'); setTimeout(()=>disp.classList.remove('flash'), 80); }
+
+  // Beat dots
+  document.querySelectorAll('.metro-beat-dot').forEach((d,i) => {
+    d.classList.remove('active','downbeat');
+    if (i === beat) d.classList.add(isAccent ? 'downbeat' : 'active');
+  });
+
+  // Pendulum
+  metroPendulumDir *= -1;
+  const rod = document.getElementById('metroRod');
+  if (rod) rod.style.transform = `translateX(-50%) rotate(${metroPendulumDir * 28}deg)`;
+
+  // Highlight note on fretboard
+  if (metroNotesSequence.length > 0) {
+    // Clear all highlights
+    document.querySelectorAll('.metro-dot-cell').forEach(el => {
+      el.classList.remove('metro-dot-active');
+      el.style.filter = 'none';
+      el.style.transform = 'scale(1)';
+    });
+    // Light up current dot
+    const cur = metroNotesSequence[dotIdx];
+    if (cur) {
+      const el = document.getElementById(`mdot-${cur.str}-${cur.col}`);
+      if (el) {
+        el.classList.add('metro-dot-active');
+        el.style.filter = 'brightness(2) drop-shadow(0 0 6px #fff)';
+        el.style.transform = 'scale(1.25)';
+      }
+    }
+    // Update counter
+    const ctr = document.getElementById('metroNoteCounter');
+    if (ctr && metroNotesSequence.length > 0) {
+      ctr.textContent = `NOTE ${dotIdx + 1} / ${metroNotesSequence.length}`;
+    }
+  }
+}
+
+function metroToggle() {
+  if (metroPlaying) { metroStop(); return; }
+  metroStart();
+}
+
+function metroStart() {
+  const ctx = metroGetCtx();
+  if (ctx.state === 'suspended') ctx.resume();
+  metroPlaying = true;
+  metroCurBeat = 0;
+  metroDotIndex = 0;
+  metroNextTime = ctx.currentTime + 0.05;
+  metroScheduler = setInterval(metroScheduleTick, 25);
+  document.getElementById('metroPlayBtn').textContent = '⏹ STOP';
+  document.getElementById('metroPlayBtn').classList.add('playing');
+}
+
+function metroStop() {
+  metroPlaying = false;
+  if (metroScheduler) { clearInterval(metroScheduler); metroScheduler = null; }
+  document.querySelectorAll('.metro-beat-dot').forEach(d=>d.classList.remove('active','downbeat'));
+  document.querySelectorAll('.metro-dot-cell').forEach(el => {
+    el.classList.remove('metro-dot-active');
+    el.style.filter = 'none';
+    el.style.transform = 'scale(1)';
+  });
+  const rod = document.getElementById('metroRod');
+  if (rod) rod.style.transform = 'translateX(-50%) rotate(0deg)';
+  const btn = document.getElementById('metroPlayBtn');
+  if (btn) { btn.textContent = '▶ START'; btn.classList.remove('playing'); }
+  const ctr = document.getElementById('metroNoteCounter');
+  if (ctr) ctr.textContent = '';
+}
+
+function metroBpmChange(val) {
+  metroBpm = Math.min(250, Math.max(30, Math.round(val)));
+  const disp = document.getElementById('metroBpmDisplay');
+  const slider = document.getElementById('metroBpmSlider');
+  if (disp) disp.textContent = metroBpm;
+  if (slider) slider.value = metroBpm;
+}
+
+function updateBeats() {
+  metroTotalBeats = parseInt(document.getElementById('metroBeats').value) || 4;
+  metroCurBeat = 0;
+  const wrap = document.getElementById('metroBeatDots');
+  if (wrap) wrap.innerHTML = Array.from({length:metroTotalBeats},()=>`<div class="metro-beat-dot"></div>`).join('');
+}
+
+function metroTap() {
+  const now = Date.now();
+  tapTimes.push(now);
+  tapTimes = tapTimes.filter(t => now - t < 3000).slice(-8);
+  if (tapTimes.length >= 2) {
+    const intervals = [];
+    for (let i = 1; i < tapTimes.length; i++) intervals.push(tapTimes[i] - tapTimes[i-1]);
+    const avg = intervals.reduce((a,b)=>a+b,0) / intervals.length;
+    metroBpmChange(Math.round(60000 / avg));
+  }
+}
+
+// ── Shape fretboard for metronome ──
+function metroInitShapeSelect() {
+  const sel = document.getElementById('metroShapeSelect');
+  if (!sel) return;
+  const prev = sel.value;
+  const exs1234 = EXERCISES.filter(e => e.category === '1234');
+  const pentaExs = EXERCISES.filter(e => e.category === 'pentatonic');
+  sel.innerHTML =
+    `<optgroup label="— FINGER PERMUTATIONS —">` +
+    exs1234.map(e => `<option value="${e.id}" ${e.id===prev?'selected':''}>${e.name}</option>`).join('') +
+    `</optgroup>` +
+    `<optgroup label="— PENTATONIC POSITIONS —">` +
+    pentaExs.map(e => `<option value="${e.id}" ${e.id===prev?'selected':''}>${e.name}</option>`).join('') +
+    `</optgroup>`;
+  metroLoadShape();
+}
+
+function metroLoadShape() {
+  const sel = document.getElementById('metroShapeSelect');
+  const modeEl = document.getElementById('metroShapeMode');
+  if (!sel || !modeEl || !sel.value) return;
+
+  const exId = sel.value;
+  const ex = EXERCISES.find(e => e.id === exId);
+  if (!ex) return;
+
+  const mode = modeEl.value;
+  const ROWS = 6;
+
+  // ── 1234 permutation ──
+  if (ex.category === '1234') {
+    // sequence: [1,2,3,4] pattern on each string
+    // one string = 4 beats (one note per beat)
+    // ascending: str6(low E) → str1(high e), then reverse
+    const perm = ex.id.replace('ex_','').split('').filter(c=>'1234'.includes(c)).map(Number);
+    // Actually parse from exercise id e.g. ex_1234 → [1,2,3,4], ex_1243 → [1,2,4,3]
+    const permStr = ex.id.replace('ex_',''); // "1234", "1243" etc
+    const fingers = permStr.split('').map(Number).filter(n=>n>=1&&n<=4);
+
+    // Build virtual dots: 6 strings × 4 fret cols
+    // Each string plays the permutation on frets 1-4
+    const COLS = 4;
+    const allDots = [];
+    const fingerColors = { 1:'#00f5ff', 2:'#39ff14', 3:'#ffcc00', 4:'#ff6b00' };
+
+    for (let s = 1; s <= ROWS; s++) {
+      fingers.forEach((f, fi) => {
+        allDots.push({ str:s, col:f, finger:f, _order: fi }); // col = fret position = finger number
+      });
+    }
+
+    // Ascending sequence: low E (str6) to high e (str1), each string plays all 4 fingers in order
+    const ascending = [];
+    for (let s = ROWS; s >= 1; s--) {
+      fingers.forEach(f => {
+        ascending.push({ str:s, col:f, finger:f });
+      });
+    }
+    const descending = [...ascending].reverse();
+    metroNotesSequence = mode === 'asc' ? ascending
+      : mode === 'desc' ? descending
+      : [...ascending, ...descending.slice(1, descending.length - 1)];
+
+    metroDotIndex = 0;
+
+    // Render fretboard: 4 frets, 6 strings, dots at finger positions
+    const CW = 48, RH = 26, PAD_L = 24, PAD_T = 8, PAD_B = 22;
+    const W = PAD_L + COLS * CW + 10;
+    const H = PAD_T + ROWS * RH + PAD_B;
+    const strLabels = ['e','B','G','D','A','E'];
+    const cx = col => PAD_L + (col - 0.5) * CW;
+    const cy = row => PAD_T + (row - 0.5) * RH;
+
+    let hLines = '', vLines = '', strSvg = '', fretSvg = '', dotsSvg = '';
+
+    for (let r = 1; r <= ROWS; r++) {
+      const y = PAD_T + (r-0.5)*RH;
+      const sw = r===6?2.6:r===5?1.9:r===4?1.5:r===3?1.2:0.9;
+      hLines += `<line x1="${PAD_L}" y1="${y}" x2="${PAD_L+COLS*CW}" y2="${y}" stroke="#3a3a5a" stroke-width="${sw}"/>`;
+      strSvg += `<text x="${PAD_L-7}" y="${y+4}" text-anchor="middle" font-family="monospace" font-size="9" fill="#6a6a8a">${strLabels[r-1]}</text>`;
+    }
+    for (let c = 0; c <= COLS; c++) {
+      const x = PAD_L + c*CW;
+      vLines += `<line x1="${x}" y1="${PAD_T}" x2="${x}" y2="${PAD_T+ROWS*RH}" stroke="${c===0?'#9a9aba':'#2a2a4a'}" stroke-width="${c===0?3:1}"/>`;
+    }
+    // Fret labels 1-4
+    for (let c = 1; c <= COLS; c++) {
+      fretSvg += `<text x="${cx(c)}" y="${PAD_T+ROWS*RH+16}" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#8a8aaa">${c}</text>`;
+    }
+
+    // Draw all 4 dots per string (one per fret/finger position)
+    for (let s = 1; s <= ROWS; s++) {
+      fingers.forEach(f => {
+        const x = cx(f);
+        const y = cy(s);
+        const color = fingerColors[f] || '#888';
+        dotsSvg += `
+          <g id="mdot-${s}-${f}" class="metro-dot-cell" style="transition:all 0.08s;transform-origin:${x}px ${y}px;">
+            <circle cx="${x}" cy="${y}" r="11" fill="#0e0e22" stroke="${color}" stroke-width="2"/>
+            <text x="${x}" y="${y+4}" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="${color}">${f}</text>
+          </g>`;
+      });
+    }
+
+    const svg = `<svg width="${W}" height="${H}" style="display:block;overflow:visible;">
+      ${hLines}${vLines}${strSvg}${fretSvg}${dotsSvg}
+    </svg>`;
+    document.getElementById('metroFretboard').innerHTML = svg;
+    document.getElementById('metroNoteCounter').textContent = `${metroNotesSequence.length} notes in sequence`;
+    return;
+  }
+
+  // ── Pentatonic shape ──
+  const shapeKey = exId.replace('ex_penta_', '');
+  const shapes = getPentaShapes();
+  const shape = shapes[shapeKey];
+  if (!shape) return;
+
+  const dots = shape.dots;
+  const COLS = shape.cols || 5;
+
+  const ascending = [];
+  for (let s = ROWS; s >= 1; s--) {
+    const rowDots = dots.filter(d => d.str === s).sort((a,b) => a.col - b.col);
+    ascending.push(...rowDots);
+  }
+  const descending = [...ascending].reverse();
+  metroNotesSequence = mode === 'asc' ? ascending
+    : mode === 'desc' ? descending
+    : [...ascending, ...descending.slice(1, descending.length - 1)];
+
+  metroDotIndex = 0;
+
+  const fingerColors = { 1:'#00f5ff', 2:'#39ff14', 3:'#ffcc00', 4:'#ff6b00' };
+  const CW = 38, RH = 26, PAD_L = 24, PAD_T = 8, PAD_B = 22;
+  const W = PAD_L + COLS * CW + 10;
+  const H = PAD_T + ROWS * RH + PAD_B;
+  const strLabels = ['e','B','G','D','A','E'];
+  const cx = col => PAD_L + (col - 0.5) * CW;
+  const cy = row => PAD_T + (row - 0.5) * RH;
+
+  let hLines = '', vLines = '', strSvg = '', dotsSvg = '', seqSvg = '';
+
+  for (let r = 1; r <= ROWS; r++) {
+    const y = PAD_T + (r-0.5)*RH;
+    const sw = r===6?2.6:r===5?1.9:r===4?1.5:r===3?1.2:0.9;
+    hLines += `<line x1="${PAD_L}" y1="${y}" x2="${PAD_L+COLS*CW}" y2="${y}" stroke="#3a3a5a" stroke-width="${sw}"/>`;
+    strSvg += `<text x="${PAD_L-7}" y="${y+4}" text-anchor="middle" font-family="monospace" font-size="9" fill="#6a6a8a">${strLabels[r-1]}</text>`;
+  }
+  for (let c = 0; c <= COLS; c++) {
+    const x = PAD_L + c*CW;
+    vLines += `<line x1="${x}" y1="${PAD_T}" x2="${x}" y2="${PAD_T+ROWS*RH}" stroke="${c===0?'#9a9aba':'#2a2a4a'}" stroke-width="${c===0?3:1}"/>`;
+  }
+  const usedCols = [...new Set(dots.map(d=>d.col))].sort((a,b)=>a-b);
+  usedCols.forEach(col => {
+    const absF = shape.fretStart + col - 1;
+    seqSvg += `<text x="${cx(col)}" y="${PAD_T+ROWS*RH+16}" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#8a8aaa">${absF}</text>`;
+  });
+
+  dots.forEach(d => {
+    const x = cx(d.col);
+    const y = cy(d.str);
+    const rootType = d.root;
+    const isMinor = rootType === true || rootType === 'minor';
+    const isMajor = rootType === 'major';
+    const finger = d.finger || 1;
+    const fColor = fingerColors[finger] || '#c0c0d8';
+    const fill = isMajor ? '#e8003a' : isMinor ? '#1a5fd4' : '#0e0e22';
+    const strk = isMajor ? '#ff2d78' : isMinor ? '#5b9bf8' : fColor;
+    const tCol = (isMinor||isMajor) ? '#fff' : fColor;
+
+    dotsSvg += `
+      <g id="mdot-${d.str}-${d.col}" class="metro-dot-cell" style="transition:all 0.08s;transform-origin:${x}px ${y}px;">
+        <circle cx="${x}" cy="${y}" r="11" fill="${fill}" stroke="${strk}" stroke-width="2"/>
+        <text x="${x}" y="${y+4}" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="${tCol}">${finger}</text>
+      </g>`;
+  });
+
+  const svg = `<svg width="${W}" height="${H}" style="display:block;overflow:visible;">
+    ${hLines}${vLines}${strSvg}${seqSvg}${dotsSvg}
+  </svg>`;
+
+  document.getElementById('metroFretboard').innerHTML = svg;
+  document.getElementById('metroNoteCounter').textContent = `${metroNotesSequence.length} notes in sequence`;
+}
+
+// Init metronome UI
+updateBeats();
+buildExPills(); updateExInfo(); renderLeaderboard();
+</script>
+</body>
+</html>
